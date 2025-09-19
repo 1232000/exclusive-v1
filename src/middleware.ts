@@ -4,7 +4,10 @@ import type { NextRequest } from 'next/server'
  
 export default async function middleware(request: NextRequest) {
 
-  const token = await getToken({req: request});
+  const cookieName = process.env.NODE_ENV === "production" ?
+  "Secure-next-auth.session-token" :
+  "next-auth.session-token"
+  const token = await getToken({req: request , cookieName});
   const { pathname } = request.nextUrl;
   const authRoutes = ['/login' , '/register' , '/forgetPassword' , '/resetCode' , '/resetPassword']
   const protectedRoutes = ['/cart' ,'/wishlist' , '/profile','/checkout' , '/allorders']
